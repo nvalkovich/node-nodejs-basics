@@ -2,14 +2,14 @@ import { Worker } from 'worker_threads';
 import os from "os";
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import path from 'node:path';
+import { join } from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const cpuNumber = os.cpus().length;
 
 const createWorkers = (number) => {
     const workerFileName = 'worker.js';
-    const pathToWorker = path.join(__dirname, workerFileName);
+    const pathToWorker = join(__dirname, workerFileName);
 
     return new Promise((resolve, reject) => {
         const worker = new Worker(pathToWorker, {
@@ -36,7 +36,6 @@ const performCalculations = async () => {
 
     const results = await Promise.allSettled(workerPromises);
     console.log(results.map((result) => result.value ?? result.reason));
-    
 };
 
 await performCalculations();
